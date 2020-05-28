@@ -1,0 +1,230 @@
+/* === ROOT === */
+:root {
+  --main-color: green;
+}
+/* ============ */
+
+/* === BASIC THINGS === */
+html {
+  height: 100%;
+  font-size: 16px;
+  font-family: 'Open Sans', sans-serif;
+  background-color: var(--main-color);
+  background-image: 
+  
+  linear-gradient(45deg, rgba(255,255,255,.3) 70px, transparent 1px),
+  linear-gradient(45deg, rgba(255,255,255,.2) 35px, transparent 1px),
+  linear-gradient(45deg, rgba(255,255,255,.2) 17.5px, transparent 17.5px),
+  linear-gradient(0deg, rgba(255,255,255,.7) 100px, transparent 1px);
+  background-size: 100px 100px, 50px 50px, 25px 25px, 100px 100px;
+  background-position: -2px -2px, -1px -1px, -.5px -.5px, auto;
+}
+
+body {
+  min-width: 256px;
+  max-width: 1080px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: auto;
+  margin-right: auto;
+
+  background-color: white;
+}
+
+/* ==================== */
+
+/* === STRUCTURAL ELEMENTS === */
+
+/* navigation bar */
+nav {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+}
+nav ul {
+  list-style-type: none;
+  background-color: var(--main-color);
+  padding: 8px;
+  margin: 0px;
+}
+nav ul li {
+  display: inline;
+}
+nav ul li a {
+  text-decoration: none;
+  color: white;
+  padding: 6px;
+  margin: 2px;
+}
+nav ul li a:hover {
+  background-color: rgba(255,255,255,.3);
+}
+
+/* header */
+header {
+  padding-top: 128px;
+  padding-bottom: 128px;
+  background-image: 
+  linear-gradient(
+      rgba(255, 255, 255, .6), 
+      rgba(255, 255, 255, .6)
+  ),
+  url(../images/bricks2.png);
+  background-color: black;
+  background-repeat: no-repeat;
+  background-size: 1400px;
+  background-position: center center;
+  border-bottom: 2px solid var(--main-color);
+}
+
+header p {
+  color: var(--main-color);
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: /* simulates text outline*/
+  0px 0px 1px white, 
+  0px 0px 3px white,
+  0px 0px 5px white;
+  
+}
+
+/* main content */
+article {
+  background-color: white;
+  padding: 24px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* side content */
+aside {
+  background-color: white;
+  padding: 24px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border-top: 2px solid var(--main-color);
+}
+
+/* sections */
+section {
+  margin: 8px;
+  padding: 16px;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+section a {
+  color: black
+}
+section a:hover {
+  color: blue
+}
+
+/* footer */
+footer {
+  background-color: var(--main-color);
+  padding: 8px 32px;
+}
+footer p, a {
+  color: white;
+}
+
+
+/* =========================== */
+
+/* === HEADING STYLES === */
+h1 {
+  /* article title */
+  font-size: 2rem;
+  margin: 0px;
+}
+
+h2{
+  /* aside title */
+  font-size: 1.5rem;
+  font-weight: normal;
+  border-bottom: 1px solid black;
+  padding: 8px 0px;
+  margin: 0px;
+}
+
+h3 {
+  /* section title */
+  font-size: 1.25rem;
+  margin: 0px;
+}
+
+
+/* ====================== */
+
+/* === PARAGRAPH STYLES === */
+/* warning block */
+p.warning {
+  border: 2px solid #efdc36;
+  border-radius: 8px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-right: 16px;
+  padding-left: 16px;
+  background-color: #fff89d;
+}
+p.warning:before {
+  color: black;
+  content: "WARNING: ";
+  font-weight: bold;
+}
+
+/* tip block */
+p.tip {
+  border: 2px solid #6ab0de;
+  border-radius: 8px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-right: 16px;
+  padding-left: 16px;
+  background-color: #e7f2fa;
+}
+p.tip:before {
+  color: black;
+  content: "TIP: ";
+  font-weight: bold;
+}
+
+/* code block */
+p.code {
+  background-color: #f7f7f7;
+  color: black;
+  font-family: monospace;
+  border: 1px solid #a2a2a2;
+  border-radius: 4px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-right: 16px;
+  padding-left: 16px;
+}
+/* ======================== */
+
+/* === MEDIA STUFF === */
+/* Put aside beside article only if screen is wide enough */
+@media (min-width: 800px){
+    article {
+        float: left;
+        width: 70%;
+        border-right: 2px solid var(--main-color);
+    }
+
+    aside {
+        float: left;
+        height: 100%;
+        width: 30%;
+        margin-left: -2px;
+        border-left: 2px solid var(--main-color);
+        border-top: none;
+    }
+    footer {
+        clear:both;
+    }
+}
+/* =================== */
