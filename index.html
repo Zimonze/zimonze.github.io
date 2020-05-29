@@ -2,87 +2,96 @@
 <html>
 
 <head>
-  <title>Home</title>
+  <title>Mastermind</title>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
   <link type="text/css" rel="stylesheet" href="style.css"/>
-  <script type="text/javascript" src="scripts/script.js" async></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    var rows = 6
+    var pegs = 4
+    var currentRow = 1
+    var currentPeg = 1
+    function createRow(num) {
+      board = document.getElementById("board");
+      var row = document.createElement("div");
+      row.className += "pegs";
+      row.id = num
+      row.innerHTML += num
+      for (n=1; n<=pegs; n++) { //1-pegs inclusive
+        row.innerHTML += "<div id='"+num+"-"+n+"' class='peg'></div>";
+      }
+      var stones = document.createElement("div");
+      stones.className += "stones";
+      stones.innerHTML += "<div class='stone'></div>".repeat(4);
+      var check = document.createElement("div");
+      check.className += "peg peg_button check noselect";
+      check.innerHTML += "CHECK";
+      check.id = "check"+num;
+      row.appendChild(stones);
+      row.appendChild(check);
+      board.appendChild(row);
+    }
+    function init() {
+      for (i=1; i<=rows; i++) { //1-rows inclusive
+        createRow(i);
+      }
+    }
+    function step(color) {
+      if (currentRow == -1) {
+        return;
+      }
+      replacePeg(currentRow, currentPeg, color);
+      if (currentPeg==pegs) {
+        document.getElementById("check"+currentRow).style.display = "block";
+        if (currentRow == rows) {
+          currentRow = -1
+        } else {
+          currentRow++;
+          currentPeg = 1;
+        }
+      } else {
+        currentPeg++;
+      }
+    }
+    function undo() {
+      if (currentRow == 1 && currentPeg == 1) {
+        return;
+      } else if (currentRow == -1) {
+        replacePeg(rows, currentPeg, "");
+        currentRow = rows;
+      } else if (currentPeg == 1){
+        currentRow--;
+        currentPeg = pegs;
+        document.getElementById("check"+currentRow).style.display = "none";
+        replacePeg(currentRow, currentPeg, "");
+      } else if (currentPeg > 1) {
+        currentPeg--;
+        replacePeg(currentRow, currentPeg, "");
+      }
+    }
+    function replacePeg(r,p,color) {
+      var oldPeg = document.getElementById(r+"-"+p)
+      newPeg = oldPeg.cloneNode();
+      newPeg.className = "peg " + color
+      document.getElementById(r).replaceChild(newPeg, oldPeg);
+    }
+  </script>
 </head>
 
-<body>
-  
-  <nav>
-  <ul>
-    <li><a href="index.html" +  class="selected">Home</a></li>
-    <li><a href="about-me.html">About Me</a></li>
-    <li><a href="my-stuff.html">My Stuff</a></li>
-    <li><a href="wobcode.html">Wobcode Translator</a></li>
-  </ul>
-  </nav>
-
-  <header>
-    <p>Zimonze</p>
-  </header>
-
-  <article>
-
-    <h1>Home</h1>
-    <p>This is the homepage.</p>
-    <p>Writing about things can be hard sometimes. That's why I have nothing to write.</p>
-
-    <section>
-      <h3>Subject 1</h3>
-      <p>The first subject.</p>
-      <p>CAW CAW CAW CAW CAW CAW CAW CAW CAW CAW CAW CAW!</p>
-    </section>
-
-    <section>
-      <h3>Subject 2</h3>
-      <p>The 2 subject.</p>
-      <p>Closed. This question is opinion-based. It is not currently accepting answers. Want to improve this question? Update the question so it can be answered with facts and citations by editing this post.</p>
-    </section>
-
-    <section>
-      <h3>Subject 3</h3>
-      <p>The third subject.</p>
-      <p>A shining crescent far beneath the flying vessel. A shining crescent far beneath the flying vessel. A shining crescent far beneath the flying vessel. A shining crescent far beneath the flying vessel.</p>
-    </section>
-
-    <section>
-      <h3>Subject 4</h3>
-      <p>Subject.</p>
-      <p>Closed. This question is opinion-based. It is not currently accepting answers. Want to improve this question? Update the question so it can be answered with facts and citations by editing this post.</p>
-    </section>
-
-    <section>
-      <h3>Subject 5</h3>
-      <p>The last subject.</p>
-      <p>A shining crescent far beneath the flying vessel.</p>
-    </section>
-
-  </article>
-
-  <aside>
-
-    <h2>Featured Content</h2>
-
-    <section>
-      <h3>Color change</h3>
-      <p>Change the color of the site.</p>
-      <button onClick="changeColor()">Color change</button>
-    </section>
-    
-    <section>
-      <h3>Promoted Site</h3>
-      <p>Are you Chinese and living in Edmonton?</p>
-      <p>Check out the <a href = https://www.ecns.wucsc.com>Edmonton Chinatown Neighbourhood Society!</a></p>
-    </section>
-
-  </aside>
-
-  <footer>
-    <p>Made by Zimonze and hosted on <a href="http://repl.it">repl.it</a>.</p>
-  </footer>
+<body onload="init();">
+  <h1>Mastermind</h1>
+  <div id="board"></div>
+  <hr>
+  <div class="pegs">
+    <div class="peg peg-button red" onclick="step('red')"></div>
+    <div class="peg peg-button orange" onclick="step('orange')"></div>
+    <div class="peg peg-button yellow" onclick="step('yellow')"></div>
+    <div class="peg peg-button green" onclick="step('green')"></div>
+    <div class="peg peg-button blue" onclick="step('blue')"></div>
+    <div class="peg peg-button purple" onclick="step('purple')"></div>
+    <div id="undo" class="peg peg-button noselect" onclick="undo()">UNDO</div>
+  </div>
+  <p>Made by Zimonze with <a href="http://repl.it">repl.it</a> and <a href="http://github.com">GitHub</a>.</p>
 
 </body>
 
