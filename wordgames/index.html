@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Word Game</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="../style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="words_dictionary.jsonp"></script>
+  <script>
+    wordsJSON = words_dictionary;
+    var wordsString = [];
+    var words = [];
+    for(var key in wordsJSON) words.push(key);
+    console.log(words);
+    function checkWord() {
+      word = document.getElementById('wordInput').value;
+      console.log(word);
+      if (words.includes(word)){
+        document.getElementById('isWord').innerHTML = "Word";
+      } else {
+        document.getElementById('isWord').innerHTML = "Not Word";
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <h1 id="win">Word Game</h1>
+  <hr>
+  Enter a word:
+  <input type="text" id="wordInput" oninput="checkWord()">
+  <div id="isWord">Not Word</div>
+  <hr>
+  <p>Made by Zimonze</p>
+
+</body>
+
+</html>
