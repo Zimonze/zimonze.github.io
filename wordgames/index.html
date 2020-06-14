@@ -6,31 +6,53 @@
   <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
   <link type="text/css" rel="stylesheet" href="../style.css"/>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="trigram_counts.jsonp"></script>
   <script src="words_dictionary.jsonp"></script>
   <script>
     wordsJSON = words_dictionary;
     var wordsString = [];
-    var words = [];
-    for(var key in wordsJSON) words.push(key);
-    console.log(words);
+    var words = Object.keys(wordsJSON);
+    var trigram = undefined;
+    //for(var key in wordsJSON){words.push(key)};
+    console.log(words)
     function checkWord() {
       word = document.getElementById('wordInput').value;
-      console.log(word);
+      isWord = document.getElementById('isWord')
       if (words.includes(word)){
-        document.getElementById('isWord').innerHTML = "Word";
+        isWord.innerHTML = "Is a word";
       } else {
-        document.getElementById('isWord').innerHTML = "Not Word";
+        isWord.innerHTML = "Not a word";
       }
+      if (word.includes(trigram)){
+        document.getElementById('hasLetters').innerHTML = "Contains given letters";
+      } else {
+        document.getElementById('hasLetters').innerHTML = "Does not contain given letters";
+      }
+    }
+    trigrams = trigram_counts;
+    //https://stackoverflow.com/a/38824395/10339299
+    var trigramKeyValuePairs = Object.keys(trigrams).map(function(key) {
+      return [String(key), trigrams[key]];
+    });
+    function validTrigrams(minOccurences){
+      return trigramKeyValuePairs.filter(pair => pair[1]>=minOccurences);
+    }
+    var valids=validTrigrams(500);
+    function newWord(){
+      trigram = valids[Math.floor(Math.random() * valids.length)][0]
+      document.getElementById("requirement").innerHTML = "Type a word containing <b>"+trigram+"</b>";
     }
   </script>
 </head>
 
-<body>
+<body onload="newWord();">
   <h1 id="win">Word Game</h1>
   <hr>
+  <div id="requirement"></div>
   Enter a word:
   <input type="text" id="wordInput" oninput="checkWord()">
-  <div id="isWord">Not Word</div>
+  <div id="isWord">Not a word</div>
+  <div id="hasLetters">Does not contain given letters</div>
   <hr>
   <p>Made by Zimonze</p>
 
