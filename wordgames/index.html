@@ -56,12 +56,7 @@
     var timeLeft = 10;
     function heartbeat(){
       if (timeLeft == 0){
-        if (valid){
-          logScore(word);
-          console.log("valid");
-        } else {
-          console.log("kaboom!");
-        }
+        logScore(word, valid)
         newWord();
         timeLeft = 10;
       }
@@ -78,13 +73,23 @@
       clearInterval(timer);
       timeLeft = 10;
       document.getElementById("timer").innerHTML = "Time left: ";
+      document.getElementById("isWord").innerHTML = "Game not started";
+      document.getElementById("isWord").style = "color:red;";
+      document.getElementById("hasLetters").innerHTML = "Game not started";
+      document.getElementById("hasLetters").style = "color:red;";
     }
     var score = 0;
-    function logScore(w){
-      s = w.length
-      score += s
-      document.getElementById("score").innerHTML = "Score: " + score;
-      document.getElementById("winningWords").innerHTML += word + " +" + s + "<br>";
+    function logScore(w, v){
+      if (v){
+        s = w.length
+        score += s
+        document.getElementById("score").innerHTML = "Score: " + score;
+        document.getElementById("winningWords").innerHTML += word + " <span style='color:green;'>+" + s + "</span> ";
+      } else {
+        score -= 10
+        document.getElementById("score").innerHTML = "Score: " + score;
+        document.getElementById("winningWords").innerHTML += "[invalid word] <span style='color:red;'>-10</span> ";
+      }
     }
   </script>
 </head>
@@ -92,14 +97,15 @@
 <body>
   <h1>Word Game</h1>
   Rules: Press the start button. You have 10 seconds to type a word that contains the given letters in order. At the end of the time limit, your word is automatically submitted and the text box is cleared. Longer words get more points. Fun is mandatory.
+  Inspired by Tea Games on <a href="https://top.gg/bot/432610292342587392">Mudae</a>, which in turn was inspired by <a href="https://jklm.fun/">BombParty</a>.
   <hr>
   <button onclick="init();">Start</button>
   <button onclick="end();">Stop</button>
   <div id="requirement">Type a word containing </div>
   <div id="timer">Time left: </div>
   Enter a word:<input type="text" id="wordInput" oninput="checkWord()">
-  <div id="isWord" style="color:red;">Not a word</div>
-  <div id="hasLetters" style="color:red;">Does not contain given letters</div>
+  <div id="isWord" style="color:red;">Game not started</div>
+  <div id="hasLetters" style="color:red;">Game not started</div>
   <div id="score">Score: </div>
   <div id="winningWords"></div>
   <hr>
