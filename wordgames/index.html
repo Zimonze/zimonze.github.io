@@ -6,27 +6,36 @@
   <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
   <link type="text/css" rel="stylesheet" href="../style.css"/>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="trigram_counts.jsonp"></script>
-  <script src="words_dictionary.jsonp"></script>
+  <script src="trigram_counts.js"></script>
+  <script src="words_list.js"></script>
   <script>
-    wordsJSON = words_dictionary;
     var wordsString = [];
-    var words = Object.keys(wordsJSON);
-    var trigram = undefined;
-    //for(var key in wordsJSON){words.push(key)};
-    console.log(words)
+    var words = words_list;
+    var word;
+    var trigram;
+    var valid = false;
     function checkWord() {
       word = document.getElementById('wordInput').value;
       isWord = document.getElementById('isWord')
       if (words.includes(word)){
         isWord.innerHTML = "Is a word";
+        isWord.style = "color:green;";
       } else {
         isWord.innerHTML = "Not a word";
+        isWord.style = "color:red;";
       }
+      hasLetters = document.getElementById('hasLetters')
       if (word.includes(trigram)){
-        document.getElementById('hasLetters').innerHTML = "Contains given letters";
+        hasLetters.innerHTML = "Contains given letters";
+        hasLetters.style = "color:green;";
       } else {
-        document.getElementById('hasLetters').innerHTML = "Does not contain given letters";
+        hasLetters.innerHTML = "Does not contain given letters";
+        hasLetters.style = "color:red;";
+      }
+      if (words.includes(word) && word.includes(trigram)){
+        valid = true;
+      } else {
+        valid = false;
       }
     }
     trigrams = trigram_counts;
@@ -39,20 +48,60 @@
     }
     var valids=validTrigrams(500);
     function newWord(){
+      document.getElementById('wordInput').value = ""
       trigram = valids[Math.floor(Math.random() * valids.length)][0]
       document.getElementById("requirement").innerHTML = "Type a word containing <b>"+trigram+"</b>";
+      checkWord();
+    }
+    var timeLeft = 10;
+    function heartbeat(){
+      if (timeLeft == 0){
+        if (valid){
+          logScore(word);
+          console.log("valid");
+        } else {
+          console.log("kaboom!");
+        }
+        newWord();
+        timeLeft = 10;
+      }
+      document.getElementById("timer").innerHTML = "Time left: " + timeLeft;
+      timeLeft--;
+    }
+    var timer;
+    function init(){
+      timer = setInterval(heartbeat,1000);
+      newWord();
+    }
+    function end(){
+      document.getElementById("requirement").innerHTML = "Type a word containing ";
+      clearInterval(timer);
+      timeLeft = 10;
+      document.getElementById("timer").innerHTML = "Time left: ";
+    }
+    var score = 0;
+    function logScore(w){
+      s = w.length
+      score += s
+      document.getElementById("score").innerHTML = "Score: " + score;
+      document.getElementById("winningWords").innerHTML += word + " +" + s + "<br>";
     }
   </script>
 </head>
 
-<body onload="newWord();">
-  <h1 id="win">Word Game</h1>
+<body>
+  <h1>Word Game</h1>
+  Rules: Press the start button. You have 10 seconds to type a word that contains the given letters in order. At the end of the time limit, your word is automatically submitted and the text box is cleared. Longer words get more points. Fun is mandatory.
   <hr>
-  <div id="requirement"></div>
-  Enter a word:
-  <input type="text" id="wordInput" oninput="checkWord()">
-  <div id="isWord">Not a word</div>
-  <div id="hasLetters">Does not contain given letters</div>
+  <button onclick="init();">Start</button>
+  <button onclick="end();">Stop</button>
+  <div id="requirement">Type a word containing </div>
+  <div id="timer">Time left: </div>
+  Enter a word:<input type="text" id="wordInput" oninput="checkWord()">
+  <div id="isWord" style="color:red;">Not a word</div>
+  <div id="hasLetters" style="color:red;">Does not contain given letters</div>
+  <div id="score">Score: </div>
+  <div id="winningWords"></div>
   <hr>
   <p>Made by Zimonze</p>
 
