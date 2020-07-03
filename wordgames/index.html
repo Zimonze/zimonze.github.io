@@ -54,6 +54,7 @@
       checkWord();
     }
     var timeLeft = 10;
+    var score = 0;
     function heartbeat(){
       if (timeLeft == 0){
         logScore(word, valid)
@@ -77,8 +78,10 @@
       document.getElementById("isWord").style = "color:red;";
       document.getElementById("hasLetters").innerHTML = "Game not started";
       document.getElementById("hasLetters").style = "color:red;";
+      score = 0;
+      document.getElementById("score").innerHTML = "Score: " + score;
+      document.getElementById("winningWords").innerHTML = "";
     }
-    var score = 0;
     function logScore(w, v){
       if (v){
         s = w.length
@@ -100,7 +103,7 @@
   Inspired by Tea Games on <a href="https://top.gg/bot/432610292342587392">Mudae</a>, which in turn was inspired by <a href="https://jklm.fun/">BombParty</a>.
   <hr>
   <button onclick="init();">Start</button>
-  <button onclick="end();">Stop</button>
+  <button onclick="end();">Stop (Resets score to 0)</button>
   <div id="requirement">Type a word containing </div>
   <div id="timer">Time left: </div>
   Enter a word:<input type="text" id="wordInput" oninput="checkWord()">
