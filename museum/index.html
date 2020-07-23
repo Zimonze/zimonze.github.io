@@ -2,70 +2,33 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>My first three.js app</title>
+		<title>Museum</title>
+    <link href="slider.css" rel="stylesheet">
 		<style>
-			body { margin: 0; }
-			canvas { display: block; }
-		</style>
+      html, body {
+        margin: 0;
+        height: 100%;
+        color: white;
+        background-color: black;
+      }
+      #canvas {
+        width: 100%;
+        height: 50%;
+        display: block;
+      }
+    </style>
 	</head>
-	<body>
+	<body onload="start('A', true)">
+    <canvas id="canvas"></canvas>
 		<script src="https://threejs.org/build/three.js"></script>
-		<script>
-			var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-      var renderer = new THREE.WebGLRenderer();
-      renderer.setSize( window.innerWidth, window.innerHeight );
-      document.body.appendChild( renderer.domElement );
-
-      function loadFont() {
-        var loader = new THREE.FontLoader();
-        loader.load('fonts/helvetiker_regular.typeface.json', function (res) {
-          font = res;
-          createText();
-        });
-      }
-
-      function createText() {
-        textGeo = new THREE.TextGeometry( 'A', {
-          font: font,
-          size: 20,
-          height: 5,
-        });
-        textGeo.computeBoundingBox();
-        textGeo.computeVertexNormals();
-
-        var material = new THREE.MeshPhongMaterial({
-          color: 0xff0000,    // (can also use a CSS color string here)
-        });
-        var text = new THREE.Mesh(textGeo, material)
-        text.position.x = -textGeo.boundingBox.max.x/2;
-        text.position.y = -textGeo.boundingBox.max.y/2;
-        text.castShadow = true;
-        scene.add(text);
-      }
-      loadFont();
-
-      var light = new THREE.PointLight( 0x444444, 3 );
-      light.position.z = 10;
-      camera.add(light);
-      scene.add(camera);
-      camera.position.z = 10;
-      var rotation = 0;
-
-      function spinCamera(){
-        rotation += 0.005
-        camera.position.z = Math.sin(rotation) * 80;
-        camera.position.x = Math.cos(rotation) * 80;
-        camera.lookAt(scene.position)
-      }
-
-      function animate() {
-        requestAnimationFrame( animate );
-        spinCamera();
-        renderer.render( scene, camera );
-      }
-      animate();
-		</script>
+		<script src="animateLetter.js"></script>
+    <script>function a(){spin = document.getElementById("animate").checked}</script>
+    <p id="a">This is the letter A.</p>
+    <!-- Rounded switch (https://www.w3schools.com/howto/howto_css_switch.asp) -->
+    <label class="switch" onclick="a()">
+      <input id="animate" type="checkbox" checked="true">
+      <span class="slider round"></span>
+    </label>
+    start/stop spinning animation
 	</body>
 </html>
