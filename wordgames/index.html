@@ -14,6 +14,18 @@
     var word;
     var trigram;
     var valid = false;
+    var timeleft;
+    var score;
+    function start() {
+      document.getElementById("wordInput").addEventListener("keyup", function(event) {
+        if (event.key === "Enter") {
+          logScore(word, valid);
+          newWord();
+        }
+      });
+      timeLeft = 10;
+      score = 0;
+    }
     function checkWord() {
       word = document.getElementById('wordInput').value;
       isWord = document.getElementById('isWord')
@@ -52,22 +64,24 @@
       trigram = valids[Math.floor(Math.random() * valids.length)][0]
       document.getElementById("requirement").innerHTML = "Type a word containing <b>"+trigram+"</b>";
       checkWord();
+      timeLeft = 10;
     }
-    var timeLeft = 10;
-    var score = 0;
     function heartbeat(){
       if (timeLeft == 0){
-        logScore(word, valid)
+        logScore(word, valid);
         newWord();
-        timeLeft = 10;
       }
       document.getElementById("timer").innerHTML = "Time left: " + timeLeft;
       timeLeft--;
     }
     var timer;
+    var started = false;
     function init(){
-      timer = setInterval(heartbeat,1000);
-      newWord();
+      if (!started) {
+        timer = setInterval(heartbeat,1000);
+        newWord();
+        started = true
+      }
     }
     function end(){
       document.getElementById("requirement").innerHTML = "Type a word containing ";
@@ -81,25 +95,27 @@
       score = 0;
       document.getElementById("score").innerHTML = "Score: " + score;
       document.getElementById("winningWords").innerHTML = "";
+      started = false
     }
     function logScore(w, v){
       if (v){
-        s = w.length
-        score += s
+        timeBonus = Math.floor(timeLeft/3.5)
+        s = w.length 
+        score += s + timeBonus
         document.getElementById("score").innerHTML = "Score: " + score;
-        document.getElementById("winningWords").innerHTML += word + " <span style='color:green;'>+" + s + "</span> ";
+        document.getElementById("winningWords").innerHTML += word + " <span style='color:green;'>+"+s+"(+"+timeBonus+")</span> ";
       } else {
-        score -= 10
+        score -= 15
         document.getElementById("score").innerHTML = "Score: " + score;
-        document.getElementById("winningWords").innerHTML += "[invalid word] <span style='color:red;'>-10</span> ";
+        document.getElementById("winningWords").innerHTML += "[invalid word] <span style='color:red;'>-15</span> ";
       }
     }
   </script>
 </head>
 
-<body>
+<body onload="start()">
   <h1>Word Game</h1>
-  Rules: Press the start button. You have 10 seconds to type a word that contains the given letters in order. At the end of the time limit, your word is automatically submitted and the text box is cleared. Longer words get more points. Fun is mandatory.
+  Rules: Press the start button. You have 10 seconds to type a word that contains the given letters in order. Press enter to submit the word (it will auto-submit once the timer ends, but there is a time bonus for submitting faster). Longer words get more points. Fun is mandatory.
   Inspired by Tea Games on <a href="https://top.gg/bot/432610292342587392">Mudae</a>, which in turn was inspired by <a href="https://jklm.fun/">BombParty</a>.
   <hr>
   <button onclick="init();">Start</button>
