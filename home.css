@@ -1,0 +1,28 @@
+html {
+  background-color: black;
+  background-image: 
+  linear-gradient(45deg, rgba(255,255,255,.3) 70px, transparent 1px),
+  linear-gradient(45deg, rgba(255,255,255,.2) 35px, transparent 1px),
+  linear-gradient(45deg, rgba(255,255,255,.1) 17.5px, transparent 17.5px),
+  linear-gradient(0deg, rgba(255,255,255,.2) 100px, transparent 1px);
+  background-size: 100px 100px, 50px 50px, 25px 25px, 100px 100px;
+  background-position: -2px -2px, -1px -1px, -.5px -.5px, auto;
+  box-sizing: border-box;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+body {
+  box-sizing: border-box;
+  height: 100%;
+  background-color: white;
+  margin: 0;
+  padding: 0;
+}
+
+#main {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px;
+  margin: 0;
+}
